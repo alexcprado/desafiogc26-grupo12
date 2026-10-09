@@ -1,0 +1,23 @@
+target/
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.github/
+
+# Security - Private Keys & Credentials
+authz.pem
+authz.pub
+*.key
+*.pem
+*.pub
+*.pfx
+*.p12
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+application-prod*.yml
