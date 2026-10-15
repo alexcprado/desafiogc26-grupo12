@@ -67,6 +67,7 @@ h1 {
     align-items: center;
     flex-direction: column;
     margin-top: 20px;
+    width: 100%;
 }
 
 .botoes-formulario-login button.active {
@@ -100,6 +101,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 85%;
 }
 
 .input-formulario-login label {
@@ -109,8 +111,11 @@ h1 {
 .input-formulario-login input {
     border: solid 1px rgb(69, 68, 68);
     background-color: #292531;
-    padding: 10px 190px 10px 15px;
+    padding: 10px 15px;
+    width: 100%;
     border-radius: 10px;
+    color: var(--cor-texto-principal);
+    width: 100%;
 }
 
 .input-formulario-login label:last-of-type {
@@ -155,4 +160,11 @@ h1 {
     border: 1px solid rgb(69, 68, 68);
     border-radius: 10px;
     padding: 10px 15px;
+}
+
+/* Patrocinador */
+.cnpj-input-login-patrocinador {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function Login() {
     const [ tipoUsuario, setTipoUsuario ] = useState<"admin" | "patrocinador">("admin");
+    const [cnpj, setCnpj] = useState("");
 
     return (
     <main className="main-login">
@@ -29,14 +30,21 @@ function Login() {
 
                     <div className="input-formulario-login texto-pequeno">
                         <label htmlFor="email">Email</label>
-                        <input id="email" type="text" placeholder="exemplo@gmail.com" />
+                        <input id="email" name="email" type="text" placeholder="exemplo@gmail.com" required/>
+
+                        {tipoUsuario === "patrocinador" && (
+                            <div className="cnpj-input-login-patrocinador">
+                                <label htmlFor="cnpj">CNPJ</label>
+                                <input type="text" id="cnpj" name="cnpj" value={cnpj} placeholder="00.000.000/0000-00" inputMode="numeric" required onChange={(e) => {const valor = e.target.value.replace(/\D/g, ""); setCnpj(valor.slice(0, 14))}}/>
+                            </div>
+                        )}
 
                         <label htmlFor="senha">Senha</label>
-                        <input id="senha" type="password" placeholder="Digite sua senha"/>
+                        <input id="senha" name="senha" type="password" placeholder="Digite sua senha" required/>
 
                         <button type="submit">Enviar</button>
 
-                        <p>Ainda não tem acesso administrativo? <a href="">Solicitar Cadastro</a></p>
+                        <p>Ainda não tem acesso? <a href="">Solicitar Cadastro</a></p>
                     </div>
 
                     <div className="footer-card-login texto-pequeno">
