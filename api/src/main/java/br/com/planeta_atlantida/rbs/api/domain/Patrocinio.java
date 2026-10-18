@@ -1,11 +1,13 @@
 package br.com.planeta_atlantida.rbs.api.domain;
 
+import br.com.planeta_atlantida.rbs.api.enums.CotaPatrocinio;
+import br.com.planeta_atlantida.rbs.api.enums.StatusPatrocinador;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,8 +38,9 @@ public class Patrocinio {
     @JoinColumn(name = "id_patrocinador", nullable = false)
     private Patrocinador patrocinador;
 
-    @Column(name = "cota", nullable = false, length = 50)
-    private String cota;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CotaPatrocinio cota;
 
     @Column(
             name = "valor_contratado",
@@ -46,5 +49,21 @@ public class Patrocinio {
             scale = 2
     )
     private BigDecimal valorContratado;
+
+    @Column(name = "data_hora_criacao", nullable = false, updatable = false, insertable = false)
+    private Instant dataHoraCriacao;
+
+    @Column(name = "data_hora_alteracao")
+    private Instant dataHoraAlteracao;
+
+    @PrePersist
+    private void prePersist() {
+        this.dataHoraCriacao = Instant.now();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.dataHoraAlteracao = Instant.now();
+    }
 
 }

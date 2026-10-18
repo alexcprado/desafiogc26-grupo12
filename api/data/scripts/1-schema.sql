@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS notificacao CASCADE;
-DROP TABLE IF EXISTS tarefa CASCADE;
+DROP TABLE IF EXISTS documento CASCADE;
 DROP TABLE IF EXISTS patrocinio CASCADE;
 DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS patrocinador CASCADE;
@@ -21,11 +20,13 @@ CREATE TABLE patrocinador (
 
 
 CREATE TABLE patrocinio (
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY NOT NULL,
     id_evento INT NOT NULL REFERENCES evento (id),
     id_patrocinador INT NOT NULL REFERENCES patrocinador (id),
-    cota VARCHAR(50) NOT NULL,
+    cota VARCHAR(30) NOT NULL CHECK (cota IN ('MASTER', 'SUBCOTA_G', 'SUBCOTA')),
     valor_contratado NUMERIC(12, 2) NOT NULL CHECK (valor_contratado >= 0),
+    data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    data_hora_alteracao TIMESTAMPTZ,
     CONSTRAINT uq_patrocinio_evento_patrocinador UNIQUE (id_evento, id_patrocinador)
 );
 
@@ -44,26 +45,24 @@ CREATE TABLE usuario (
     OR (tipo = 'PATROCINADOR' AND id_patrocinador IS NOT NULL))
 );
 
-CREATE TABLE tarefa (
+CREATE TABLE documento (
     id SERIAL PRIMARY KEY NOT NULL,
-    id_patrocinio INT NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    descricao VARCHAR(255),
-    status VARCHAR(20) NOT NULL DEFAULT 'PENDENTE',
-    prazo DATE NOT NULL,
-    data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    data_hora_alteracao TIMESTAMPTZ,
-    CONSTRAINT ck_status CHECK (status in ('PENDENTE', 'ENTREGUE', 'ATRASADO')),
-    CONSTRAINT fk_tarefa_patrocinio FOREIGN KEY (id_patrocinio) REFERENCES patrocinio (id)
-);
-
-CREATE TABLE notificacao (
-    id SERIAL PRIMARY KEY NOT NULL,
-    id_patrocinador INT NOT NULL,
-    id_usuario_administrador INT NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    conteudo TEXT NOT NULL,
-    data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    CONSTRAINT fk_notificacao_patrocinador FOREIGN KEY (id_patrocinador) REFERENCES patrocinador (id),
-    CONSTRAINT fk_notificacao_usuario_administrador FOREIGN KEY (id_usuario_administrador) REFERENCES usuario (id)
+    id_patrocinio INT NOT NULL REFERENCES patrocinio (id),
+    id_usuario_envio INT NOT NULL REFERENCES usuario (id),
+    nome_arquivo VARCHAR(255) NOT NULL,
+    categoria VARCHAR(30) NOT NULL
+    CHECK (categoria IN (
+            'FORMULARIO_INGRESSOS',
+            'MIV',
+            'LOGOTIPO',
+            'FOTO_APLICACAO_MARCA',
+            'RELATORIO_MIDIA',
+            'CONTRATO',
+            'OUTRO'
+        )),
+    chave_armazenamento VARCHAR(500) NOT NULL UNIQUE,
+    tipo_mime VARCHAR(100) NOT NULL,
+    tamanho_bytes BIGINT NOT NULL CHECK (tamanho_bytes > 0),
+    origem VARCHAR(20) NOT NULL CHECK (origem IN ('PATROCINADOR', 'ADMIN')),
+    data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.time.Instant;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,6 +42,11 @@ public class Usuario {
 
     @Column(name = "data_hora_alteracao")
     private Instant dataHoraAlteracao;
+
+    @PrePersist
+    private void prePersist() {
+        this.dataHoraCriacao = Instant.now();
+    }
 
     @PreUpdate
     private void preUpdate() {
