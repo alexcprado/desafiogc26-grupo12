@@ -30,14 +30,14 @@ public class Usuario {
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(name = "senha_hash", nullable = false)
-    private String senhaHash;
+    @Column(name = "senha", nullable = false)
+    private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, length = 20)
     private TipoUsuario tipo;
 
-    @Column(name = "data_hora_criacao", nullable = false, updatable = false, insertable = false)
+    @Column(name = "data_hora_criacao", nullable = false, updatable = false)
     private Instant dataHoraCriacao;
 
     @Column(name = "data_hora_alteracao")

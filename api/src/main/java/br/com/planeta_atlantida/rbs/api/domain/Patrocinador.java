@@ -31,7 +31,7 @@ public class Patrocinador {
     @Column(name = "status", nullable = false, length = 10)
     private StatusPatrocinador status;
 
-    @Column(name = "data_hora_criacao", nullable = false, updatable = false, insertable = false)
+    @Column(name = "data_hora_criacao", nullable = false, updatable = false)
     private Instant dataHoraCriacao;
 
     @Column(name = "data_hora_alteracao")

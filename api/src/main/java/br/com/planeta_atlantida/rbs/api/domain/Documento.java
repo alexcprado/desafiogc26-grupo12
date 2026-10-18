@@ -2,6 +2,7 @@ package br.com.planeta_atlantida.rbs.api.domain;
 
 import br.com.planeta_atlantida.rbs.api.enums.CategoriaDocumento;
 import br.com.planeta_atlantida.rbs.api.enums.OrigemDocumento;
+import br.com.planeta_atlantida.rbs.api.enums.StatusPatrocinador;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -68,5 +69,10 @@ public class Documento {
             updatable = false
     )
     private Instant dataHoraCriacao;
+
+    @PrePersist
+    private void prePersist() {
+        this.dataHoraCriacao = Instant.now();
+    }
 
 }
