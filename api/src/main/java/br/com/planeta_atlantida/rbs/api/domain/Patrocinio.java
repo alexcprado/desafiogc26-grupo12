@@ -1,7 +1,6 @@
 package br.com.planeta_atlantida.rbs.api.domain;
 
 import br.com.planeta_atlantida.rbs.api.enums.CotaPatrocinio;
-import br.com.planeta_atlantida.rbs.api.enums.StatusPatrocinador;
 import jakarta.persistence.*;
 import lombok.*;
 

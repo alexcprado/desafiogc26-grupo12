@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdicionarUsuarioRequest {
+public class AdicionarAdminRequest {
 
     @NotBlank(message = "Nome deve ser informado.")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres.")

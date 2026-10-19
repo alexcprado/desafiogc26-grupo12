@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -47,10 +48,10 @@ public class AuthController {
 
         JwtClaimsSet jwt = JwtClaimsSet.builder()
                 .issuer("planeta-atlantida-api")
-                .subject(usuario.getNome())
+                .subject(usuario.getEmail())
                 .expiresAt(Instant.now().plusSeconds(expiresIn))
                 .issuedAt(Instant.now())
-                .claim("userId", usuario.getId())
+                .claim("roles", List.of(usuario.getTipo().name()))
                 .build();
 
         String token = jwtEncoder.encode(JwtEncoderParameters.from(jwt)).getTokenValue();
