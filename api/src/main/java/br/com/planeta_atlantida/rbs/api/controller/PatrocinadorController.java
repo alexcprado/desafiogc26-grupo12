@@ -31,8 +31,7 @@ public class PatrocinadorController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<AdicionarPatrocinadorResponse> adicionar(@RequestBody @Valid AdicionarPatrocinadorRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adicionarPatrocinadorService.criar(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(adicionarPatrocinadorService.adicionar(request));
     }
-
 
 }

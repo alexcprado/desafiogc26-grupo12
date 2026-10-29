@@ -18,7 +18,7 @@ public class AdicionarPatrocinadorService {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public AdicionarPatrocinadorResponse criar(AdicionarPatrocinadorRequest request) {
+    public AdicionarPatrocinadorResponse adicionar(AdicionarPatrocinadorRequest request) {
 
         Patrocinador novoPatrocinador = AdicionarPatrocinadorMapper.toEntity(request);
 

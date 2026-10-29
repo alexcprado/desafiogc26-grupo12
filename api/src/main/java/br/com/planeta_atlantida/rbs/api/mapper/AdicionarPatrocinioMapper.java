@@ -1,5 +1,6 @@
 package br.com.planeta_atlantida.rbs.api.mapper;
 
+import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPatrocinioResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Evento;
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinador;
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinio;
@@ -14,6 +15,14 @@ public class AdicionarPatrocinioMapper {
                 .evento(evento)
                 .patrocinador(patrocinador)
                 .cota(cota).build();
+    }
+
+    public static AdicionarPatrocinioResponse toResponse(Long idPatrocinio, Long idPatrocinador, Long idEvento) {
+        return AdicionarPatrocinioResponse.builder()
+                .idPatrocinio(idPatrocinio)
+                .idPatrocinador(idPatrocinador)
+                .idEvento(idEvento)
+                .build();
     }
 
 }
