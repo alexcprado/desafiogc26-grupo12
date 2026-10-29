@@ -1,13 +1,12 @@
 package br.com.planeta_atlantida.rbs.api.controller.dtos.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CNPJ;
 
 @Data
 @Builder
@@ -19,14 +18,8 @@ public class AdicionarPatrocinadorRequest {
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres.")
     private String nome;
 
-    @NotBlank(message = "Email deve ser informado.")
-    @Email(message = "Email deve ser válido")
-    private String email;
-
-    @NotBlank(message = "Senha deve ser informada.")
-    private String senha;
-
-    @NotNull(message = "Id do patrocinador deve ser informado.")
-    private Long idPatrocinador;
+    @NotBlank(message = "CNPJ deve ser informado.")
+    @CNPJ(message = "CNPJ deve ser válido.")
+    private String cnpj;
 
 }

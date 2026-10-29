@@ -2,6 +2,7 @@ package br.com.planeta_atlantida.rbs.api.controller.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,10 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdicionarAdminRequest {
+public class AdicionarUsuarioPatrocinadorRequest {
 
     @NotBlank(message = "Nome deve ser informado.")
-    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres.")
+    @Size(min = 3, message = "Nome deve ter no mínimo 3 caracteres.")
     private String nome;
 
     @NotBlank(message = "Email deve ser informado.")
@@ -24,5 +25,8 @@ public class AdicionarAdminRequest {
 
     @NotBlank(message = "Senha deve ser informada.")
     private String senha;
+
+    @NotNull(message = "Id do patrocinador deve ser informado.")
+    private Long idPatrocinador;
 
 }

@@ -1,7 +1,8 @@
 package br.com.planeta_atlantida.rbs.api.service.Usuario;
 
-import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarAdminRequest;
-import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPatrocinadorRequest;
+import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioAdminRequest;
+
+import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioPatrocinadorRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarUsuarioResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinador;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
@@ -12,6 +13,7 @@ import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +26,10 @@ public class AdicionarUsuarioService {
     private final PatrocinadorRepository patrocinadorRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public AdicionarUsuarioResponse adicionarAdmin(AdicionarAdminRequest request) {
+    public AdicionarUsuarioResponse adicionarAdmin(AdicionarUsuarioAdminRequest request) {
 
         Usuario novoUsuario = AdicionarUsuarioMapper.toEntity(request);
         novoUsuario.setTipo(TipoUsuario.ADMIN);
@@ -34,8 +38,9 @@ public class AdicionarUsuarioService {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public AdicionarUsuarioResponse adicionarPatrocinador(AdicionarPatrocinadorRequest request) {
+    public AdicionarUsuarioResponse adicionarPatrocinador(AdicionarUsuarioPatrocinadorRequest request) {
 
         Patrocinador patrocinador = patrocinadorRepository
                 .findById(request.getIdPatrocinador())

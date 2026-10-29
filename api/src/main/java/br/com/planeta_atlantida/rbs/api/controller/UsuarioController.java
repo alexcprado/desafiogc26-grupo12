@@ -1,7 +1,7 @@
 package br.com.planeta_atlantida.rbs.api.controller;
 
-import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarAdminRequest;
-import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPatrocinadorRequest;
+import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioAdminRequest;
+import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioPatrocinadorRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarUsuarioResponse;
 import br.com.planeta_atlantida.rbs.api.service.Usuario.AdicionarUsuarioService;
 import jakarta.validation.Valid;
@@ -23,13 +23,13 @@ public class UsuarioController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admins")
-    public ResponseEntity<AdicionarUsuarioResponse> adicionarAdmin(@Valid @RequestBody AdicionarAdminRequest request) {
+    public ResponseEntity<AdicionarUsuarioResponse> adicionarUsuarioAdmin(@Valid @RequestBody AdicionarUsuarioAdminRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(adicionarUsuarioService.adicionarAdmin(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/patrocinadores")
-    public ResponseEntity<AdicionarUsuarioResponse> adicionarPatrocinador(@Valid @RequestBody AdicionarPatrocinadorRequest request) {
+    public ResponseEntity<AdicionarUsuarioResponse> adicionarUsuarioPatrocinador(@Valid @RequestBody AdicionarUsuarioPatrocinadorRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(adicionarUsuarioService.adicionarPatrocinador(request));
     }
 

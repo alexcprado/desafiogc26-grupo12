@@ -39,6 +39,8 @@ public class SecurityConfig {
     @Value("${jwt.private.key}")
     private RSAPrivateKey rsaPrivateKey;
 
+    private static final String ROLE = "ADMIN";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         return http
@@ -49,7 +51,11 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
                         .requestMatchers("/usuarios/**")
-                        .hasRole("ADMIN")
+                        .hasRole(ROLE)
+                        .requestMatchers("/patrocinadores/**")
+                        .hasRole(ROLE)
+                        .requestMatchers("/eventos/**")
+                        .hasRole(ROLE)
                         .requestMatchers(HttpMethod.GET, "/actuator").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .anyRequest().authenticated()

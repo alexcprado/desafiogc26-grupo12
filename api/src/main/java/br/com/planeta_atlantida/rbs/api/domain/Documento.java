@@ -2,7 +2,6 @@ package br.com.planeta_atlantida.rbs.api.domain;
 
 import br.com.planeta_atlantida.rbs.api.enums.CategoriaDocumento;
 import br.com.planeta_atlantida.rbs.api.enums.OrigemDocumento;
-import br.com.planeta_atlantida.rbs.api.enums.StatusPatrocinador;
 import jakarta.persistence.*;
 import lombok.*;
 

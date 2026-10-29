@@ -9,4 +9,5 @@ public class BadCredentialsException extends AbstractException {
     public BadCredentialsException(final String message) {
         super(message);
     }
+
 }

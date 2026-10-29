@@ -4,7 +4,6 @@ import br.com.planeta_atlantida.rbs.api.enums.CotaPatrocinio;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Builder
@@ -40,14 +39,6 @@ public class Patrocinio {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CotaPatrocinio cota;
-
-    @Column(
-            name = "valor_contratado",
-            nullable = false,
-            precision = 12,
-            scale = 2
-    )
-    private BigDecimal valorContratado;
 
     @Column(name = "data_hora_criacao", nullable = false, updatable = false)
     private Instant dataHoraCriacao;
