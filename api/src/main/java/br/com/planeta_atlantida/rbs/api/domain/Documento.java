@@ -16,6 +16,10 @@ import java.time.Instant;
 @Table(name = "documento",
         uniqueConstraints = {
                 @UniqueConstraint(
+                  name = "uk_documento_patrocinio_categoria",
+                  columnNames = {"id_patrocinio", "categoria"}
+                ),
+                @UniqueConstraint(
                         name = "uk_documento_chave_armazenamento",
                         columnNames = "chave_armazenamento"
                 )
@@ -26,7 +30,6 @@ public class Documento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_patrocinio", nullable = false)
@@ -64,7 +67,6 @@ public class Documento {
     @Column(
             name = "data_hora_criacao",
             nullable = false,
-            insertable = false,
             updatable = false
     )
     private Instant dataHoraCriacao;

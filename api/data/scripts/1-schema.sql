@@ -65,5 +65,6 @@ CREATE TABLE documento (
     tipo_mime VARCHAR(100) NOT NULL,
     tamanho_bytes BIGINT NOT NULL CHECK (tamanho_bytes > 0),
     origem VARCHAR(20) NOT NULL CHECK (origem IN ('PATROCINADOR', 'ADMIN')),
-    data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uk_documento_patrocinio_categoria UNIQUE (id_patrocinio, categoria)
 );

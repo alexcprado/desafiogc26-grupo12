@@ -1,4 +1,4 @@
-package br.com.planeta_atlantida.rbs.api.service.Patrocinador;
+package br.com.planeta_atlantida.rbs.api.service.patrocinador;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.ListarPatrocinadoresResponse;
 import br.com.planeta_atlantida.rbs.api.enums.StatusPatrocinador;

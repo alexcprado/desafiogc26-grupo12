@@ -1,4 +1,4 @@
-package br.com.planeta_atlantida.rbs.api.service.Patrocinio;
+package br.com.planeta_atlantida.rbs.api.service.patrocinio;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPatrocinioRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPatrocinioResponse;

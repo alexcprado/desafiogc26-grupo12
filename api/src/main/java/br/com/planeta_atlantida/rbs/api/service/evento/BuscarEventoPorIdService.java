@@ -1,4 +1,4 @@
-package br.com.planeta_atlantida.rbs.api.service.Evento;
+package br.com.planeta_atlantida.rbs.api.service.evento;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.BuscarEventoResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Evento;

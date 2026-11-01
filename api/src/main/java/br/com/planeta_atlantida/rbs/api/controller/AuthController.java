@@ -4,7 +4,7 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.request.LoginRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.LoginResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.exception.BadCredentialsException;
-import br.com.planeta_atlantida.rbs.api.service.Usuario.BuscarUsuarioPorEmailService;
+import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioPorEmailService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

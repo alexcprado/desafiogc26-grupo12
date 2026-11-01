@@ -14,6 +14,31 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./scripts:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d db-planeta_atlantida"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: planeta-api
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/db-planeta_atlantida
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DOCUMENTOS_PATH: /app/storage/documentos
+    ports:
+      - "8080:8080"
+    volumes:
+      - documentos-data:/app/storage/documentos
+
 volumes:
   postgres-data:
+  documentos-data:
   pgadmin-data:

@@ -3,7 +3,7 @@ package br.com.planeta_atlantida.rbs.api.controller;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioAdminRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioPatrocinadorRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarUsuarioResponse;
-import br.com.planeta_atlantida.rbs.api.service.Usuario.AdicionarUsuarioService;
+import br.com.planeta_atlantida.rbs.api.service.usuario.AdicionarUsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

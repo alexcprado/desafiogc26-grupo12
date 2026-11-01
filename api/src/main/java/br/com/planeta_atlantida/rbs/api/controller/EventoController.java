@@ -6,9 +6,9 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPatroci
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPatrocinioResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.BuscarEventoResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPatrocinadorResponse;
-import br.com.planeta_atlantida.rbs.api.service.Evento.BuscarEventoPorIdService;
-import br.com.planeta_atlantida.rbs.api.service.Patrocinador.AdicionarPatrocinadorService;
-import br.com.planeta_atlantida.rbs.api.service.Patrocinio.AdicionarPatrocinioService;
+import br.com.planeta_atlantida.rbs.api.service.evento.BuscarEventoPorIdService;
+import br.com.planeta_atlantida.rbs.api.service.patrocinador.AdicionarPatrocinadorService;
+import br.com.planeta_atlantida.rbs.api.service.patrocinio.AdicionarPatrocinioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

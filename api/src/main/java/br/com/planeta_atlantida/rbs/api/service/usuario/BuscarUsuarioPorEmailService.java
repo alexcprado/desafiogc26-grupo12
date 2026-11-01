@@ -1,4 +1,4 @@
-package br.com.planeta_atlantida.rbs.api.service.Usuario;
+package br.com.planeta_atlantida.rbs.api.service.usuario;
 
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
