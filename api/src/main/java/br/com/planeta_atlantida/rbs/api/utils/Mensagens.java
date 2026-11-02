@@ -18,5 +18,7 @@ public final class Mensagens {
     public static final String DOCUMENTO_JA_EXISTE = "Já existe um documento cadastrado para essa categoria neste patrocínio.";
     public static final String IMPOSSIVEL_ARMAZENAR_ARQUIVO = "Não foi possível armazenar o arquivo.";
     public static final String PATROCINADOR_JA_EXISTE = "Esse patrocinador já está cadastrado.";
-
+    public static final String COTA_NAO_PERMITE_PESQUISA_ATIVACAO = "A cota do patrocinador não permite adicionar pesquisa de ativação.";
+    public static final String PESQUISA_ATIVACAO_JA_EXISTE = "A pesquisa de ativação deste patrocinio já existe.";
+    public static final String SEM_PERMISSAO_PARA_ENVIAR_PESQUISA_ATIVACAO = "Você não possui permissão para enviar pesquisa de ativação para este patrocínio";
 }
