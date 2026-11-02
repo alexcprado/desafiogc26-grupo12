@@ -4,6 +4,7 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.request.LoginRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.LoginResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.exception.BadCredentialsException;
+import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioPorEmailService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import jakarta.validation.Valid;
@@ -30,6 +31,7 @@ public class AuthController {
     private final BuscarUsuarioPorEmailService buscarUsuarioPorEmailService;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
+    private final RegistrarAuditoriaService registrarAuditoriaService;
 
     private boolean isLoginCorreto(String password, String savedPassword) {
         return passwordEncoder.matches(password, savedPassword);
@@ -55,6 +57,8 @@ public class AuthController {
                 .build();
 
         String token = jwtEncoder.encode(JwtEncoderParameters.from(jwt)).getTokenValue();
+
+        registrarAuditoriaService.registrarLogin(usuario);
 
         LoginResponse loginResponse = LoginResponse.builder()
                 .accessToken(token)

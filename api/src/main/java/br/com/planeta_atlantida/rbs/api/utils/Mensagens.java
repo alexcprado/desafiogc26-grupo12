@@ -17,5 +17,6 @@ public final class Mensagens {
     public static final String SEM_PERMISSAO_PARA_ENVIAR_DOCUMENTOS = "Você não possui permissão para enviar documentos neste patrocínio.";
     public static final String DOCUMENTO_JA_EXISTE = "Já existe um documento cadastrado para essa categoria neste patrocínio.";
     public static final String IMPOSSIVEL_ARMAZENAR_ARQUIVO = "Não foi possível armazenar o arquivo.";
+    public static final String PATROCINADOR_JA_EXISTE = "Esse patrocinador já está cadastrado.";
 
 }

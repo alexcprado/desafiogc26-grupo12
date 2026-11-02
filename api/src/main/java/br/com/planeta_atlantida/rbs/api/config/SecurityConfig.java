@@ -56,6 +56,8 @@ public class SecurityConfig {
                         .hasRole(ROLE)
                         .requestMatchers("/eventos/**")
                         .hasRole(ROLE)
+                        .requestMatchers("/auditorias/**")
+                        .hasRole(ROLE)
                         .requestMatchers(HttpMethod.GET, "/actuator").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .anyRequest().authenticated()

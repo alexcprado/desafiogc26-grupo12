@@ -4,17 +4,15 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.response.EnviarDocumento
 import br.com.planeta_atlantida.rbs.api.domain.Documento;
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinio;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
-import br.com.planeta_atlantida.rbs.api.enums.CategoriaDocumento;
-import br.com.planeta_atlantida.rbs.api.enums.OrigemDocumento;
-import br.com.planeta_atlantida.rbs.api.enums.TipoUsuario;
+import br.com.planeta_atlantida.rbs.api.enums.*;
 import br.com.planeta_atlantida.rbs.api.exception.*;
 import br.com.planeta_atlantida.rbs.api.mapper.EnviarDocumentoMapper;
 import br.com.planeta_atlantida.rbs.api.repository.DocumentoRepository;
 import br.com.planeta_atlantida.rbs.api.repository.PatrocinioRepository;
+import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioLogadoService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +28,7 @@ public class EnviarDocumentoService {
     private final PatrocinioRepository patrocinioRepository;
     private final BuscarUsuarioLogadoService buscarUsuarioLogadoService;
     private final ArmazenamentoDocumentoService armazenamentoDocumentoService;
+    private final RegistrarAuditoriaService registrarAuditoriaService;
 
     @Transactional
     public EnviarDocumentoResponse enviar(Long idPatrocinio, MultipartFile arquivo, CategoriaDocumento categoria) {
@@ -73,6 +72,13 @@ public class EnviarDocumentoService {
 
         Documento documentoSalvo = documentoRepository.saveAndFlush(novoDocumento);
 
+        registrarAuditoriaService.registrar(
+                AcaoAuditoria.ADICIONOU_DOCUMENTO,
+                EntidadeAuditoria.DOCUMENTO,
+                documentoSalvo.getId(),
+                documentoSalvo.getNomeArquivo()
+        );
+
         return EnviarDocumentoMapper.toResponse(documentoSalvo.getId());
 
     }
@@ -100,7 +106,7 @@ public class EnviarDocumentoService {
                     usuario.getPatrocinador().getId(),
                     patrocinio.getPatrocinador().getId()
         )) {
-            throw new AccessDeniedException(Mensagens.SEM_PERMISSAO_PARA_ENVIAR_DOCUMENTOS);
+            throw new SemPermissaoParaEnviarDocumentoException(Mensagens.SEM_PERMISSAO_PARA_ENVIAR_DOCUMENTOS);
         }
     }
 

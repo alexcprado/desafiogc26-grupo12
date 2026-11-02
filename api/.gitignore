@@ -6,6 +6,7 @@ target/
 .project
 .settings/
 .github/
+/storage/documentos/
 
 # Security - Private Keys & Credentials
 authz.pem
