@@ -16,6 +16,9 @@ import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.repository.PatrocinioRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.EventoValidator;
+import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
+import br.com.planeta_atlantida.rbs.api.validator.PatrocinioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -25,28 +28,21 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdicionarPatrocinioService {
 
-    private final EventoRepository eventoRepository;
-    private final PatrocinadorRepository patrocinadorRepository;
     private final PatrocinioRepository patrocinioRepository;
     private final RegistrarAuditoriaService registrarAuditoriaService;
+    private final EventoValidator eventoValidator;
+    private final PatrocinadorValidator patrocinadorValidator;
+    private final PatrocinioValidator patrocinioValidator;
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public AdicionarPatrocinioResponse adicionar(Long idEvento, AdicionarPatrocinioRequest request) {
 
-        Evento evento = eventoRepository.findById(idEvento)
-                .orElseThrow(() ->
-                new EventoNaoEncontradoException(Mensagens.EVENTO_NAO_ENCONTRADO)
-                );
+        Evento evento = eventoValidator.validarEventoExiste(idEvento);
 
-        Patrocinador patrocinador = patrocinadorRepository.findById(request.getIdPatrocinador())
-                .orElseThrow(() ->
-                        new PatrocinadorNaoEncontradoException(Mensagens.PATROCINADOR_NAO_ENCONTRADO)
-                );
+        Patrocinador patrocinador = patrocinadorValidator.validarPatrocinadorExiste(request.getIdPatrocinador());
 
-        if (patrocinioRepository.existsByEvento_IdAndPatrocinador_Id(idEvento, request.getIdPatrocinador())) {
-            throw new PatrocinadorJaVinculadoException(Mensagens.PATROCINADOR_JA_VINCULADO);
-        }
+        patrocinioValidator.validarPatrocinadorJaVinculado(idEvento, patrocinador.getId());
 
         Patrocinio novoPatrocinio = AdicionarPatrocinioMapper.toEntity(evento, patrocinador, request.getCota());
 

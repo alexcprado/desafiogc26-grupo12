@@ -2,6 +2,7 @@ package br.com.planeta_atlantida.rbs.api.service.documento;
 
 import br.com.planeta_atlantida.rbs.api.exception.ArquivoNaoEncontradoException;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.ArmazenamentoDocumentoValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -19,9 +20,11 @@ import java.util.UUID;
 public class ArmazenamentoDocumentoService {
 
     private final Path diretorio;
+    private final ArmazenamentoDocumentoValidator armazenamentoDocumentoValidator;
 
     public ArmazenamentoDocumentoService(@Value("${app.storage.documentos.path}") String diretorio) {
         this.diretorio = Paths.get(diretorio).toAbsolutePath().normalize();
+        this.armazenamentoDocumentoValidator = new ArmazenamentoDocumentoValidator();
     }
 
 
@@ -32,9 +35,7 @@ public class ArmazenamentoDocumentoService {
         String chave = UUID.randomUUID().toString();
         Path destino = diretorio.resolve(chave).normalize();
 
-        if (!destino.getParent().equals(diretorio)) {
-            throw new IOException(Mensagens.CAMINHO_ARMAZENAMENTO_INVALIDO);
-        }
+        armazenamentoDocumentoValidator.verificarCaminho(destino, diretorio);
 
         try (InputStream inputStream = arquivo.getInputStream()) {
             Files.copy(inputStream, destino);
@@ -44,13 +45,11 @@ public class ArmazenamentoDocumentoService {
 
     }
 
-    public Resource carregar(String chave) throws IOException {
+    public Resource carregar(String chave) {
 
         Path arquivo = diretorio.resolve(chave).normalize();
 
-        if (!Files.isRegularFile(arquivo) || !Files.isReadable(arquivo)) {
-            throw new ArquivoNaoEncontradoException(Mensagens.ARQUIVO_NAO_ENCONTRADO);
-        }
+        armazenamentoDocumentoValidator.verificarArquivoExiste(arquivo);
 
         return new FileSystemResource(arquivo);
 
@@ -60,9 +59,7 @@ public class ArmazenamentoDocumentoService {
 
         Path arquivo = diretorio.resolve(chave).normalize();
 
-        if (!arquivo.getParent().equals(diretorio)) {
-            throw new IOException(Mensagens.CHAVE_ARMAZENAMENTO_INVALIDA);
-        }
+        armazenamentoDocumentoValidator.verificarChaveArmazenamentoValida(arquivo, diretorio);
 
         Files.deleteIfExists(arquivo);
 

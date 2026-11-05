@@ -6,6 +6,7 @@ import br.com.planeta_atlantida.rbs.api.exception.EventoNaoEncontradoException;
 import br.com.planeta_atlantida.rbs.api.mapper.BuscarEventoMapper;
 import br.com.planeta_atlantida.rbs.api.repository.EventoRepository;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.EventoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BuscarEventoPorIdService {
 
-    private final EventoRepository eventoRepository;
+    private final EventoValidator eventoValidator;
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     public BuscarEventoResponse buscar(Long id) {
 
-        Evento evento = eventoRepository
-                .findById(id)
-                .orElseThrow(() ->
-                        new EventoNaoEncontradoException(Mensagens.EVENTO_NAO_ENCONTRADO
-                        ));
+        Evento evento = eventoValidator.validarEventoExiste(id);
 
         return BuscarEventoMapper.toResponse(evento);
 

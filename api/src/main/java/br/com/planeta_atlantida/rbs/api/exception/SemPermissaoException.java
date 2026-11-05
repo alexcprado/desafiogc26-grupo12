@@ -4,10 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
-public class SemPermissaoParaBaixarDocumentoException extends AbstractException {
+public class SemPermissaoException extends AbstractException {
 
-  public SemPermissaoParaBaixarDocumentoException(String message) {
-    super(message);
-  }
+    public SemPermissaoException(String message) {
+        super(message);
+    }
 
 }

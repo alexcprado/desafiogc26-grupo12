@@ -12,6 +12,8 @@ import br.com.planeta_atlantida.rbs.api.repository.PatrocinioRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioLogadoService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.DocumentoValidator;
+import br.com.planeta_atlantida.rbs.api.validator.PatrocinioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,29 +27,23 @@ import java.util.Objects;
 public class EnviarDocumentoService {
 
     private final DocumentoRepository documentoRepository;
-    private final PatrocinioRepository patrocinioRepository;
     private final BuscarUsuarioLogadoService buscarUsuarioLogadoService;
     private final ArmazenamentoDocumentoService armazenamentoDocumentoService;
     private final RegistrarAuditoriaService registrarAuditoriaService;
+    private final PatrocinioValidator patrocinioValidator;
+    private final DocumentoValidator documentoValidator;
 
     @Transactional
     public EnviarDocumentoResponse enviar(Long idPatrocinio, MultipartFile arquivo, CategoriaDocumento categoria) {
 
-        validarArquivo(arquivo);
-        validarCategoria(categoria);
+        documentoValidator.validarArquivo(arquivo);
+        documentoValidator.validarCategoria(categoria);
 
         Usuario usuario = buscarUsuarioLogadoService.buscar();
 
-        Patrocinio patrocinio = patrocinioRepository.findById(idPatrocinio)
-                .orElseThrow(() ->
-                        new PatrocinioNaoEncontradoException(Mensagens.PATROCINIO_NAO_ENCONTRADO)
-                );
-
-        validarPermissao(usuario, patrocinio);
-
-        if (documentoRepository.existsByPatrocinio_IdAndCategoria(idPatrocinio, categoria)) {
-            throw new DocumentoJaExisteException(Mensagens.DOCUMENTO_JA_EXISTE);
-        }
+        Patrocinio patrocinio = patrocinioValidator.validarPatrocinioExiste(idPatrocinio);
+        patrocinioValidator.validarPermissao(patrocinio);
+        documentoValidator.validarDocumentoJaExiste(idPatrocinio, categoria);
 
         String chaveArmazenamento;
 
@@ -81,33 +77,6 @@ public class EnviarDocumentoService {
 
         return EnviarDocumentoMapper.toResponse(documentoSalvo.getId());
 
-    }
-
-    private void validarArquivo(MultipartFile arquivo) {
-        if (arquivo == null || arquivo.isEmpty()) {
-            throw new ArquivoVazioException(Mensagens.ARQUIVO_VAZIO);
-        }
-    }
-
-    private void validarCategoria(CategoriaDocumento categoria) {
-        if (categoria == null) {
-            throw new CategoriaVaziaException(Mensagens.CATEGORIA_VAZIA);
-        }
-    }
-
-    private void validarPermissao(Usuario usuario, Patrocinio patrocinio) {
-        if (usuario.getTipo() == TipoUsuario.ADMIN) {
-            return;
-        }
-
-        if (usuario.getTipo() != TipoUsuario.PATROCINADOR
-            || usuario.getPatrocinador() == null
-            || !Objects.equals(
-                    usuario.getPatrocinador().getId(),
-                    patrocinio.getPatrocinador().getId()
-        )) {
-            throw new SemPermissaoParaEnviarDocumentoException(Mensagens.SEM_PERMISSAO_PARA_ENVIAR_DOCUMENTOS);
-        }
     }
 
     private String obterNomeArquivo(MultipartFile arquivo) {

@@ -12,7 +12,6 @@ import br.com.planeta_atlantida.rbs.api.service.patrocinador.DesativarPatrocinad
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.ListarPatrocinadoresService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

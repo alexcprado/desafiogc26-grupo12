@@ -10,6 +10,7 @@ import br.com.planeta_atlantida.rbs.api.mapper.AdicionarPatrocinadorMapper;
 import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,13 @@ public class AdicionarPatrocinadorService {
 
     private final PatrocinadorRepository patrocinadorRepository;
     private final RegistrarAuditoriaService registrarAuditoriaService;
+    private final PatrocinadorValidator patrocinadorValidator;
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public AdicionarPatrocinadorResponse adicionar(AdicionarPatrocinadorRequest request) {
 
-        if (patrocinadorRepository.existsByCnpj(request.getCnpj())) {
-            throw new PatrocinadorJaExisteException(Mensagens.PATROCINADOR_JA_EXISTE);
-        }
+        patrocinadorValidator.validarPatrocinadorJaExistePorCnpj(request.getCnpj());
 
         Patrocinador novoPatrocinador = AdicionarPatrocinadorMapper.toEntity(request);
 

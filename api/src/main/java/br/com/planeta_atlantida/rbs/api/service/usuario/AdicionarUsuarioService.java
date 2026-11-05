@@ -12,6 +12,7 @@ import br.com.planeta_atlantida.rbs.api.mapper.AdicionarUsuarioMapper;
 import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdicionarUsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PatrocinadorRepository patrocinadorRepository;
+    private final PatrocinadorValidator patrocinadorValidator;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -42,12 +43,7 @@ public class AdicionarUsuarioService {
     @Transactional
     public AdicionarUsuarioResponse adicionarPatrocinador(AdicionarUsuarioPatrocinadorRequest request) {
 
-        Patrocinador patrocinador = patrocinadorRepository
-                .findById(request.getIdPatrocinador())
-                .orElseThrow(() ->
-                        new PatrocinadorNaoEncontradoException(
-                                Mensagens.PATROCINADOR_NAO_ENCONTRADO
-                        ));
+        Patrocinador patrocinador = patrocinadorValidator.validarPatrocinadorExiste(request.getIdPatrocinador());
 
         Usuario novoUsuario = AdicionarUsuarioMapper.toEntity(request);
 

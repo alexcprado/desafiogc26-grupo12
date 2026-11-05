@@ -9,6 +9,7 @@ import br.com.planeta_atlantida.rbs.api.exception.PatrocinadorNaoEncontradoExcep
 import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
+import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -18,17 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DesativarPatrocinadorService {
 
-    private final PatrocinadorRepository patrocinadorRepository;
     private final RegistrarAuditoriaService registrarAuditoriaService;
+    private final PatrocinadorValidator patrocinadorValidator;
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public DesativarPatrocinadorResponse desativar(Long idPatrocinador) {
 
-        Patrocinador patrocinador = patrocinadorRepository.findById(idPatrocinador)
-                .orElseThrow(() ->
-                        new PatrocinadorNaoEncontradoException(Mensagens.PATROCINADOR_NAO_ENCONTRADO
-                        ));
+        Patrocinador patrocinador = patrocinadorValidator.validarPatrocinadorExiste(idPatrocinador);
 
         patrocinador.setStatus(StatusPatrocinador.INATIVO);
 
