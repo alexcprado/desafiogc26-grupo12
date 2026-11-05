@@ -3,6 +3,7 @@ package br.com.planeta_atlantida.rbs.api.enums;
 public enum AcaoAuditoria {
     ADICIONOU_DOCUMENTO,
     REMOVEU_DOCUMENTO,
+    BAIXOU_DOCUMENTO,
     ADICIONOU_PATROCINADOR,
     ALTEROU_PATROCINADOR,
     REMOVEU_PATROCINADOR,

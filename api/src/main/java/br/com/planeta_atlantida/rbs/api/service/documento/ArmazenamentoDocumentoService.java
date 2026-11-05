@@ -1,7 +1,10 @@
 package br.com.planeta_atlantida.rbs.api.service.documento;
 
+import br.com.planeta_atlantida.rbs.api.exception.ArquivoNaoEncontradoException;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +41,18 @@ public class ArmazenamentoDocumentoService {
         }
 
         return chave;
+
+    }
+
+    public Resource carregar(String chave) throws IOException {
+
+        Path arquivo = diretorio.resolve(chave).normalize();
+
+        if (!Files.isRegularFile(arquivo) || !Files.isReadable(arquivo)) {
+            throw new ArquivoNaoEncontradoException(Mensagens.ARQUIVO_NAO_ENCONTRADO);
+        }
+
+        return new FileSystemResource(arquivo);
 
     }
 
