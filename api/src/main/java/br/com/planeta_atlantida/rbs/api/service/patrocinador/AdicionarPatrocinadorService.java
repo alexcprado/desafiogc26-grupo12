@@ -5,11 +5,9 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPatroc
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinador;
 import br.com.planeta_atlantida.rbs.api.enums.AcaoAuditoria;
 import br.com.planeta_atlantida.rbs.api.enums.EntidadeAuditoria;
-import br.com.planeta_atlantida.rbs.api.exception.PatrocinadorJaExisteException;
 import br.com.planeta_atlantida.rbs.api.mapper.AdicionarPatrocinadorMapper;
 import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
-import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -7,11 +7,8 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarUsuari
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinador;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.enums.TipoUsuario;
-import br.com.planeta_atlantida.rbs.api.exception.PatrocinadorNaoEncontradoException;
 import br.com.planeta_atlantida.rbs.api.mapper.AdicionarUsuarioMapper;
-import br.com.planeta_atlantida.rbs.api.repository.PatrocinadorRepository;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
-import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

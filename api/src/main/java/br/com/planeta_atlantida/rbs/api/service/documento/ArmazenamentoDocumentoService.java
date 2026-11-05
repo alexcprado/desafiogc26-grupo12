@@ -1,7 +1,5 @@
 package br.com.planeta_atlantida.rbs.api.service.documento;
 
-import br.com.planeta_atlantida.rbs.api.exception.ArquivoNaoEncontradoException;
-import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import br.com.planeta_atlantida.rbs.api.validator.ArmazenamentoDocumentoValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;

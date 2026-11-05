@@ -4,24 +4,17 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPesquis
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPesquisaAtivacaoResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Patrocinio;
 import br.com.planeta_atlantida.rbs.api.domain.PesquisaAtivacao;
-import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.enums.AcaoAuditoria;
 import br.com.planeta_atlantida.rbs.api.enums.EntidadeAuditoria;
-import br.com.planeta_atlantida.rbs.api.enums.TipoUsuario;
-import br.com.planeta_atlantida.rbs.api.exception.SemPermissaoParaEnviarPesquisaAtivacaoException;
 import br.com.planeta_atlantida.rbs.api.mapper.AdicionarPesquisaAtivacaoMapper;
 import br.com.planeta_atlantida.rbs.api.repository.PesquisaAtivacaoRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
-import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioLogadoService;
-import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinioValidator;
 import br.com.planeta_atlantida.rbs.api.validator.PesquisaAtivacaoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

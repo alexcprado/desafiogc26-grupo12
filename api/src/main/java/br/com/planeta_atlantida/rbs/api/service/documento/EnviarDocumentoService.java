@@ -8,7 +8,6 @@ import br.com.planeta_atlantida.rbs.api.enums.*;
 import br.com.planeta_atlantida.rbs.api.exception.*;
 import br.com.planeta_atlantida.rbs.api.mapper.EnviarDocumentoMapper;
 import br.com.planeta_atlantida.rbs.api.repository.DocumentoRepository;
-import br.com.planeta_atlantida.rbs.api.repository.PatrocinioRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioLogadoService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

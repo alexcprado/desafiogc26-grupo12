@@ -2,7 +2,9 @@ package br.com.planeta_atlantida.rbs.api.controller;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPesquisaAtivacaoRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPesquisaAtivacaoResponse;
+import br.com.planeta_atlantida.rbs.api.controller.dtos.response.DetalhesPatrocinioResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.ListarPesquisasAtivacaoResponse;
+import br.com.planeta_atlantida.rbs.api.service.patrocinio.BuscarDetalhesPatrocinioService;
 import br.com.planeta_atlantida.rbs.api.service.pesquisaativacao.AdicionarPesquisaAtivacaoService;
 import br.com.planeta_atlantida.rbs.api.service.pesquisaativacao.ListarPesquisasAtivacaoService;
 import jakarta.validation.Valid;
@@ -21,6 +23,12 @@ public class PatrocinioController {
 
     private final AdicionarPesquisaAtivacaoService adicionarPesquisaAtivacaoService;
     private final ListarPesquisasAtivacaoService listarPesquisasAtivacaoService;
+    private final BuscarDetalhesPatrocinioService buscarDetalhesPatrocinioService;
+
+    @GetMapping("/{id}/detalhes")
+    public ResponseEntity<DetalhesPatrocinioResponse> buscarDetalhes(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(buscarDetalhesPatrocinioService.buscar(id));
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/pesquisa-ativacao")
