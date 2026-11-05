@@ -6,6 +6,7 @@ public enum CategoriaDocumento {
     LOGOTIPO,
     FOTO_APLICACAO_MARCA,
     RELATORIO_MIDIA,
+    PLANO_COMERCIAL,
     CONTRATO,
     OUTRO
 }

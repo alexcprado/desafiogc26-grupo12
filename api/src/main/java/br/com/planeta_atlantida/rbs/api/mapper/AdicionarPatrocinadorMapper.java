@@ -12,6 +12,9 @@ public class AdicionarPatrocinadorMapper {
         return Patrocinador.builder()
                 .nome(request.getNome())
                 .cnpj(request.getCnpj())
+                .segmento(request.getSegmento())
+                .contatoPrincipal(request.getContatoPrincipal())
+                .telefone(request.getTelefone())
                 .build();
     }
 

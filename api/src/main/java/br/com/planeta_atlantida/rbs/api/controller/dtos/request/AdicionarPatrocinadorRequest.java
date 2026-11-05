@@ -22,4 +22,13 @@ public class AdicionarPatrocinadorRequest {
     @CNPJ(message = "CNPJ deve ser válido.")
     private String cnpj;
 
+    @NotBlank(message = "Segmento deve ser informado.")
+    private String segmento;
+
+    @NotBlank(message = "Contato principal deve ser informado.")
+    private String contatoPrincipal;
+
+    @NotBlank(message = "Numero de telefone deve ser informado.")
+    private String telefone;
+
 }

@@ -29,6 +29,9 @@ public class Patrocinador {
     @Column(name = "segmento")
     private String segmento;
 
+    @Column(name = "contato_principal")
+    private String contatoPrincipal;
+
     @Column(name = "telefone", length = 20)
     private String telefone;
 

@@ -16,7 +16,9 @@ CREATE TABLE patrocinador (
     cnpj VARCHAR(14) NOT NULL UNIQUE,
     nome VARCHAR(255) NOT NULL,
     segmento VARCHAR(255),
+    contato_principal VARCHAR(100),
     telefone VARCHAR(20),
+    observacoes TEXT,
     status VARCHAR(10) NOT NULL DEFAULT 'ATIVO' CHECK (status IN ('ATIVO', 'INATIVO')),
     data_hora_criacao TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     data_hora_alteracao TIMESTAMPTZ
@@ -60,6 +62,7 @@ CREATE TABLE documento (
             'LOGOTIPO',
             'FOTO_APLICACAO_MARCA',
             'RELATORIO_MIDIA',
+            'PLANO_COMERCIAL',
             'CONTRATO',
             'OUTRO'
         )),
