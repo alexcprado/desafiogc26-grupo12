@@ -1,0 +1,14 @@
+package br.com.planeta_atlantida.rbs.api.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class CortesiaNaoEncontradaException extends AbstractException {
+
+    public CortesiaNaoEncontradaException(String message)
+    {
+        super(message);
+    }
+
+}

@@ -6,5 +6,6 @@ public enum EntidadeAuditoria {
     PATROCINIO,
     USUARIO,
     AUTENTICACAO,
-    PESQUISA_ATIVACAO
+    PESQUISA_ATIVACAO,
+    CORTESIA
 }

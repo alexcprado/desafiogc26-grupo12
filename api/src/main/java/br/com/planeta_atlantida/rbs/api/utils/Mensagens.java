@@ -21,5 +21,7 @@ public final class Mensagens {
     public static final String PESQUISA_ATIVACAO_JA_EXISTE = "A pesquisa de ativação deste patrocinio já existe.";
     public static final String ARQUIVO_NAO_ENCONTRADO = "Arquivo não encontrado.";
     public static final String SEM_PERMISSAO_PARA_EXECUTAR_ACAO = "Você não tem permissão para executar essa ação neste patrocinio.";
+    public static final String CORTESIA_JA_CADASTRADA = "Cortesia já cadastrada.";
+    public static final String CORTESIA_NAO_ENCONTRADA = "Cortesia não encontrada.";
 
 }
