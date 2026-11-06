@@ -6,11 +6,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PesquisaAtivacaoRepository extends JpaRepository<PesquisaAtivacao, Long> {
 
     Page<PesquisaAtivacao> findAll(Pageable pageable);
 
     boolean existsByPatrocinio_Id(Long idPatrocinio);
+
+    Optional<PesquisaAtivacao> findByPatrocinio_Id(Long idPatrocinio);
 
 }

@@ -6,8 +6,10 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarPatroc
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AlterarPatrocinadorResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.DesativarPatrocinadorResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.ListarPatrocinadoresResponse;
+import br.com.planeta_atlantida.rbs.api.controller.dtos.response.PatrocinadorResponse;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.AdicionarPatrocinadorService;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.AlterarPatrocinadorService;
+import br.com.planeta_atlantida.rbs.api.service.patrocinador.BuscarPatrocinadorPorIdService;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.DesativarPatrocinadorService;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.ListarPatrocinadoresService;
 import jakarta.validation.Valid;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class PatrocinadorController {
 
     private final ListarPatrocinadoresService listarPatrocinadoresService;
+    private final BuscarPatrocinadorPorIdService buscarPatrocinadorPorIdService;
     private final AdicionarPatrocinadorService adicionarPatrocinadorService;
     private final AlterarPatrocinadorService alterarPatrocinadorService;
     private final DesativarPatrocinadorService desativarPatrocinadorService;
@@ -33,6 +36,12 @@ public class PatrocinadorController {
     @GetMapping()
     public ResponseEntity<Page<ListarPatrocinadoresResponse>> listar(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(listarPatrocinadoresService.listar(pageable));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<PatrocinadorResponse> buscar(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(buscarPatrocinadorPorIdService.buscar(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

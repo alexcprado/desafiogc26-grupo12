@@ -38,7 +38,7 @@ Registro das ações para auditoria
 
 Existem dois perfis de usuário: **ADMIN**, que administra eventos, patrocinadores e usuários, e **PATROCINADOR**, que pode consultar o próprio patrocínio, enviar documentos e, quando elegível, registrar uma pesquisa de ativação.
 
-O repositório contém o backend da API e os recursos necessários para executá-lo com PostgreSQL. Não há aplicação frontend neste projeto.
+O repositório contém o backend da API em `api/` e o front-end React + Vite em `web/`.
 
 ## Funcionalidades
 
@@ -169,36 +169,44 @@ HTTP / DTOs → controllers → services → repositories → PostgreSQL
 ```text
 .
 ├── README.md
-└── api/
-    ├── data/
-    │   ├── docker-compose.yml       # PostgreSQL e API em containers
-    │   ├── README.MD               # Instruções básicas do Compose
-    │   └── scripts/
-    │       ├── 1-schema.sql        # Tabelas e restrições do banco
-    │       └── 2-Insert-mock.sql   # Evento e usuário inicial de exemplo
+├── api/                           # API Spring Boot
+│   ├── data/
+│   │   ├── docker-compose.yml       # PostgreSQL e API em containers
+│   │   ├── README.MD               # Instruções básicas do Compose
+│   │   └── scripts/
+│   │       ├── 1-schema.sql        # Tabelas e restrições do banco
+│   │       └── 2-Insert-mock.sql   # Evento e usuário inicial de exemplo
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/br/com/planeta_atlantida/rbs/api/
+│   │   │   │   ├── config/         # Segurança e CORS
+│   │   │   │   ├── controller/     # Controllers REST e DTOs
+│   │   │   │   ├── domain/         # Entidades JPA
+│   │   │   │   ├── enums/          # Perfis, cotas, categorias e auditoria
+│   │   │   │   ├── exception/      # Exceções da aplicação
+│   │   │   │   ├── handler/        # Tratamento de erros
+│   │   │   │   ├── mapper/         # Conversão entre domínio e DTOs
+│   │   │   │   ├── repository/     # Repositórios JPA
+│   │   │   │   ├── service/        # Lógica de negócio por funcionalidade
+│   │   │   │   ├── utils/          # Mensagens e utilitários
+│   │   │   │   └── validator/      # Regras e verificações
+│   │   │   └── resources/
+│   │   │       ├── application.yml # Configuração da aplicação
+│   │   │       ├── authz.pub       # Chave pública para JWT
+│   │   │       └── authz.pem       # Chave privada para JWT
+│   │   └── test/                   # Teste de inicialização do contexto
+│   ├── storage/documentos/         # Diretório padrão de documentos enviados
+│   ├── Dockerfile
+│   ├── mvnw / mvnw.cmd
+│   └── pom.xml
+└── web/                           # Front-end React + Vite
     ├── src/
-    │   ├── main/
-    │   │   ├── java/br/com/planeta_atlantida/rbs/api/
-    │   │   │   ├── config/         # Segurança e CORS
-    │   │   │   ├── controller/     # Controllers REST e DTOs
-    │   │   │   ├── domain/         # Entidades JPA
-    │   │   │   ├── enums/          # Perfis, cotas, categorias e auditoria
-    │   │   │   ├── exception/      # Exceções da aplicação
-    │   │   │   ├── handler/        # Tratamento de erros
-    │   │   │   ├── mapper/         # Conversão entre domínio e DTOs
-    │   │   │   ├── repository/     # Repositórios JPA
-    │   │   │   ├── service/        # Lógica de negócio por funcionalidade
-    │   │   │   ├── utils/          # Mensagens e utilitários
-    │   │   │   └── validator/      # Regras e verificações
-    │   │   └── resources/
-    │   │       ├── application.yml # Configuração da aplicação
-    │   │       ├── authz.pub       # Chave pública para JWT
-    │   │       └── authz.pem       # Chave privada para JWT
-    │   └── test/                   # Teste de inicialização do contexto
-    ├── storage/documentos/         # Diretório padrão de documentos enviados
-    ├── Dockerfile
-    ├── mvnw / mvnw.cmd
-    └── pom.xml
+    │   ├── app/                   # Rotas e providers
+    │   ├── pages/                 # Composição por rota
+    │   ├── entities/              # Uma pasta por entidade do back-end
+    │   └── shared/                # API client, sessão, UI e layout
+    ├── public/                    # Logo do evento
+    └── README.md                  # Como rodar e decisões do front
 ```
 
 ## Modelo de dados
@@ -300,6 +308,19 @@ Na pasta `api`:
 .\mvnw.cmd clean package
 .\mvnw.cmd test
 ```
+
+### Front-end
+
+O front fica em `web/` e consome a API. Com a API rodando em `http://localhost:8081`:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+O Vite sobe em `http://localhost:4200` e encaminha `/api` para a porta 8081. Para outra URL de API, crie
+`web/.env` com `VITE_API_URL=http://localhost:8080`. Detalhes de estrutura e decisões em `web/README.md`.
 
 ## Autenticação
 

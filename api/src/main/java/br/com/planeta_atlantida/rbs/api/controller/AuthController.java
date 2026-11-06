@@ -2,9 +2,12 @@ package br.com.planeta_atlantida.rbs.api.controller;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.LoginRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.LoginResponse;
+import br.com.planeta_atlantida.rbs.api.controller.dtos.response.UsuarioLogadoResponse;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.exception.BadCredentialsException;
+import br.com.planeta_atlantida.rbs.api.mapper.UsuarioLogadoMapper;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
+import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioLogadoService;
 import br.com.planeta_atlantida.rbs.api.service.usuario.BuscarUsuarioPorEmailService;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import jakarta.validation.Valid;
@@ -14,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +33,7 @@ import java.util.Optional;
 public class AuthController {
 
     private final BuscarUsuarioPorEmailService buscarUsuarioPorEmailService;
+    private final BuscarUsuarioLogadoService buscarUsuarioLogadoService;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
     private final RegistrarAuditoriaService registrarAuditoriaService;
@@ -66,5 +71,10 @@ public class AuthController {
                 .build();
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioLogadoResponse> me() {
+        return ResponseEntity.ok(UsuarioLogadoMapper.toResponse(buscarUsuarioLogadoService.buscar()));
     }
 }

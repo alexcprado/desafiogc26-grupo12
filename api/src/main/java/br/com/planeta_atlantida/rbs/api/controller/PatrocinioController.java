@@ -7,7 +7,10 @@ import br.com.planeta_atlantida.rbs.api.service.cortesia.AdicionarCortesiaServic
 import br.com.planeta_atlantida.rbs.api.service.cortesia.ListarCortesiasService;
 import br.com.planeta_atlantida.rbs.api.service.cortesia.RemoverCortesiaService;
 import br.com.planeta_atlantida.rbs.api.service.patrocinio.BuscarDetalhesPatrocinioService;
+import br.com.planeta_atlantida.rbs.api.service.patrocinio.ListarMeusPatrociniosService;
+import br.com.planeta_atlantida.rbs.api.service.patrocinio.ListarPatrociniosService;
 import br.com.planeta_atlantida.rbs.api.service.pesquisaativacao.AdicionarPesquisaAtivacaoService;
+import br.com.planeta_atlantida.rbs.api.service.pesquisaativacao.BuscarPesquisaAtivacaoService;
 import br.com.planeta_atlantida.rbs.api.service.pesquisaativacao.ListarPesquisasAtivacaoService;
 import br.com.planeta_atlantida.rbs.api.service.relatorio.GerarRelatorioService;
 import jakarta.validation.Valid;
@@ -30,11 +33,28 @@ public class PatrocinioController {
 
     private final AdicionarPesquisaAtivacaoService adicionarPesquisaAtivacaoService;
     private final ListarPesquisasAtivacaoService listarPesquisasAtivacaoService;
+    private final BuscarPesquisaAtivacaoService buscarPesquisaAtivacaoService;
     private final BuscarDetalhesPatrocinioService buscarDetalhesPatrocinioService;
+    private final ListarPatrociniosService listarPatrociniosService;
+    private final ListarMeusPatrociniosService listarMeusPatrociniosService;
     private final AdicionarCortesiaService adicionarCortesiaService;
     private final RemoverCortesiaService removerCortesiaService;
     private final ListarCortesiasService listarCortesiasService;
     private final GerarRelatorioService gerarRelatorioService;
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping()
+    public ResponseEntity<Page<PatrocinioResumoResponse>> listarTodos(
+            @RequestParam(required = false) Long idEvento,
+            Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(listarPatrociniosService.listar(idEvento, pageable));
+    }
+
+    @PreAuthorize("hasRole('PATROCINADOR')")
+    @GetMapping("/meus")
+    public ResponseEntity<List<PatrocinioResumoResponse>> listarMeus() {
+        return ResponseEntity.status(HttpStatus.OK).body(listarMeusPatrociniosService.listar());
+    }
 
     @GetMapping("/{id}/detalhes")
     public ResponseEntity<DetalhesPatrocinioResponse> buscarDetalhes(@PathVariable Long id) {
@@ -45,6 +65,12 @@ public class PatrocinioController {
     @GetMapping("/pesquisa-ativacao")
     public ResponseEntity<Page<ListarPesquisasAtivacaoResponse>> listar(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(listarPesquisasAtivacaoService.listar(pageable));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
+    @GetMapping("/{id}/pesquisa-ativacao")
+    public ResponseEntity<ListarPesquisasAtivacaoResponse> buscarPesquisa(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(buscarPesquisaAtivacaoService.buscar(id));
     }
 
     @PostMapping("/{id}/pesquisa-ativacao")
