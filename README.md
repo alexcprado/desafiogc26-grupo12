@@ -49,9 +49,84 @@ O repositório contém o backend da API e os recursos necessários para executá
 - Associação de patrocinadores a eventos com cotas `MASTER`, `SUBCOTA_G` ou `SUBCOTA`.
 - Consulta dos detalhes de um patrocínio e dos documentos associados.
 - Upload e download de documentos por categoria, armazenados no sistema de arquivos.
-- Registro de uma pesquisa de ativação por patrocínio.
-- Auditoria de logins e de operações relevantes, como alteração de patrocinador, vínculo de patrocínio e movimentação de documentos.
+- Registro de uma pesquisa de ativação por patrocínio, restrita a cotas `MASTER`.
+- Gestão de cortesias vinculadas ao patrocínio, com setor, tipo e quantidade.
+- Geração de relatório consolidado do patrocínio com auxílio de IA (Google Gemini), extraindo textos de documentos PDF/DOCX e sintetizando os dados em linguagem profissional em português.
+- Auditoria de logins e de operações relevantes, como alteração de patrocinador, vínculo de patrocínio, movimentação de documentos, pesquisa de ativação e cortesias.
 - Endpoints de saúde e monitoramento do Spring Boot Actuator.
+
+### Novas funcionalidades adicionadas
+
+#### 1) Gestão de cortesias por patrocínio
+
+A API permite que o administrador registre cortesias vinculadas a um patrocínio, definindo:
+
+- `setor`: área de atuação da cortesia (`MUSICA`, `ESPORTE`, `FESTIVAL`, etc., conforme enum do domínio).
+- `tipo`: tipo de cortesia (`SEXTA`, `SABADO`, `PASSAPORTE`).
+- `quantidade`: número de cortesias ofertadas.
+
+A funcionalidade cobre:
+
+- cadastro de uma cortesia para um patrocínio;
+- listagem das cortesias do patrocínio;
+- remoção da cortesia cadastrada;
+- registro em auditoria de cada operação.
+
+A regra de negócio impede que o mesmo patrocínio tenha mais de uma cortesia cadastrada ao mesmo tempo, preservando integridade do conjunto de benefícios do patrocínio.
+
+#### 2) Pesquisa de ativação do patrocínio
+
+A pesquisa de ativação é um questionário obrigatório para patrocínios de cota `MASTER`, com três perguntas:
+
+- `pergunta1`
+- `pergunta2`
+- `pergunta3`
+
+A API valida:
+
+- que as três perguntas tenham conteúdo útil;
+- que só seja permitida para patrocínios de cota `MASTER`;
+- que cada patrocínio só possa ter uma única pesquisa cadastrada;
+- que o usuário autenticado tenha permissão de acessar o patrocínio em questão.
+
+Essa funcionalidade é relevante para captar dados do nível de ativação do patrocinador e reunir um histórico das respostas no contexto do patrocínio.
+
+#### 3) Relatório inteligente com Gemini
+
+A aplicação inclui a rota `GET /patrocinios/{id}/relatorio`, que gera um relatório textual do patrocínio em português brasileiro com base nos documentos enviados para esse patrocínio.
+
+O fluxo implementado:
+
+- busca os documentos do patrocínio em ordem de criação;
+- filtra somente categorias relevantes para análise (
+  `RELATORIO_MIDIA`, `FORMULARIO_INGRESSOS`, `PLANO_COMERCIAL` e `CONTRATO`);
+- extrai texto de arquivos PDF, DOCX e TXT;
+- limita a quantidade de conteúdo processado para manter a operação eficiente;
+- envia o contexto ao modelo de IA do Google Gemini;
+- retorna um relatório estruturado com resumo executivo, objetivos, entregas, métricas, indicadores, conclusões e pendências.
+
+A geração do relatório respeita regras de segurança e consistência:
+
+- nunca inventa informações;
+- usa apenas o conteúdo dos documentos fornecidos;
+- diferencia metas planejadas e resultados executados;
+- informa a origem dos dados e a fórmula de indicadores quando calculados;
+- declara ausência de informação quando os documentos não contemplam a métrica;
+- ignora instruções internas que possam aparecer nos materiais analisados.
+
+Esse recurso transforma a API em uma base operacional para análise e consolidação de entregas de patrocínio sem exigir intervenção manual para montar um resumo executivo.
+
+#### 4) Fluxo completo de documentação e validação
+
+Além do upload e da operação de download, o sistema incorpora regras mais robustas para a combinação de documentos e informações do patrocínio:
+
+- cada patrocínio aceita apenas um documento por categoria;
+- o upload verifica arquivo vazio, tamanho e categoria válida;
+- a aplicação salva o arquivo no diretório configurado e registra o metadado no banco;
+- o sistema valida que o usuário autenticado tenha acesso ao patrocínio antes de enviar ou baixar qualquer documento;
+- o arquivo é lido com segurança para extração de conteúdo textual quando a IA gera o relatório.
+
+Essas medidas reduzem inconsistências na base documental e deixam o ciclo de comprovação do patrocínio mais controlado.
 
 ## Arquitetura
 
@@ -331,6 +406,24 @@ Categorias aceitas: `FORMULARIO_INGRESSOS`, `MIV`, `LOGOTIPO`, `FOTO_APLICACAO_M
 
 O corpo do POST deve conter três perguntas não vazias: `pergunta1`, `pergunta2` e `pergunta3`. A pesquisa só pode ser criada uma vez e somente para patrocínios de cota `MASTER`.
 
+### Cortesias
+
+| Método | Rota | Acesso | Descrição |
+| --- | --- | --- | --- |
+| `GET` | `/patrocinios/{id}/cortesias` | ADMIN ou patrocinador vinculado | Lista as cortesias vinculadas ao patrocínio. |
+| `POST` | `/patrocinios/{id}/cortesias` | ADMIN | Cadastra uma cortesia para o patrocínio. |
+| `DELETE` | `/patrocinios/{id}/cortesias/{idCortesia}` | ADMIN | Remove a cortesia cadastrada. |
+
+O cadastro exige `setor`, `tipo` e `quantidade`. Os valores aceitos para `tipo` são `SEXTA`, `SABADO` e `PASSAPORTE`. O conjunto de cortesias é tratado como um cadastro único por patrocínio, e cada operação é registrada na auditoria.
+
+### Relatório do patrocínio
+
+| Método | Rota | Acesso | Descrição |
+| --- | --- | --- | --- |
+| `GET` | `/patrocinios/{id}/relatorio` | ADMIN ou patrocinador vinculado | Gera um relatório textual do patrocínio com base nos documentos enviados. |
+
+A rota produz um texto em português brasileiro estruturado em blocos de análise do patrocínio. Ela considera documentos relevantes da categoria de mídia/comercial e utiliza a integração com Gemini para transformar o material em um resumo executivo e diagnóstico operacional.
+
 ### Auditoria
 
 | Método | Rota | Acesso | Descrição |
@@ -357,8 +450,10 @@ O Actuator está configurado para expor `health`, `info` e `prometheus`.
 - Usuários patrocinadores só podem acessar patrocínios do patrocinador ao qual pertencem.
 - A desativação de patrocinador altera seu status para `INATIVO`, preservando o registro.
 - Cada patrocínio pode ter uma pesquisa de ativação, permitida apenas para a cota `MASTER`.
+- Cada patrocínio pode ter uma única cortesia cadastrada por conjunto de dados; a regra impede duplicações fora do modelo esperado.
 - Cada categoria de documento pode aparecer no máximo uma vez para o mesmo patrocínio.
 - Os arquivos são armazenados em `DOCUMENTOS_PATH` (por padrão, `./storage/documentos`); o banco guarda seus metadados e uma chave de armazenamento gerada pela aplicação.
+- O relatório do patrocínio usa apenas documentos relevantes e extrai texto por meio de parsers de PDF, DOCX e TXT antes de enviar o contexto para a IA.
 - Tokens JWT expiram após 600 segundos.
 
 ## Erros e validações
