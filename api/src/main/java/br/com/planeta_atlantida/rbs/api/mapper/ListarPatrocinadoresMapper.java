@@ -11,6 +11,11 @@ public class ListarPatrocinadoresMapper {
         return ListarPatrocinadoresResponse.builder()
                 .id(entity.getId())
                 .nome(entity.getNome())
+                .cnpj(entity.getCnpj())
+                .segmento(entity.getSegmento())
+                .contatoPrincipal(entity.getContatoPrincipal())
+                .telefone(entity.getTelefone())
+                .status(entity.getStatus())
                 .build();
     }
 
