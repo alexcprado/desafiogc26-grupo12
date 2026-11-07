@@ -85,7 +85,7 @@ export function LoginForm() {
             autoComplete="current-password"
             placeholder="••••••••"
             required
-            minLength={6}
+            minLength={5}
             value={senha}
             onChange={(evento) => setSenha(evento.target.value)}
           />

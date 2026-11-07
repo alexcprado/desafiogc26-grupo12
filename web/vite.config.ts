@@ -15,7 +15,7 @@ export default defineConfig({
     allowedHosts: [".trycloudflare.com", "localhost"],
     proxy: {
       "/api": {
-        target: "http://localhost:8081",
+        target: "http://localhost:8080",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
