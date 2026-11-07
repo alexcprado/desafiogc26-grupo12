@@ -333,6 +333,15 @@ VITE_API_URL=http://localhost:8080 npm run build
 
 Detalhes de estrutura e decisões em `web/README.md`.
 
+### Verificação rápida
+
+Com a API e o front rodando, o script da raiz confere os quatro pontos que costumam falhar (API no ar, login direto, login pelo proxy e index do front):
+
+```bash
+./verificar.sh
+# outra porta: API_URL=http://localhost:8081 WEB_URL=http://localhost:4173 ./verificar.sh
+```
+
 ## Autenticação
 
 O endpoint de login é público. Nas demais rotas de negócio, envie o JWT retornado no cabeçalho HTTP `Authorization`, usando o esquema `Bearer`.
