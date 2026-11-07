@@ -35,6 +35,12 @@ app:
   storage:
     documentos:
       path: ${DOCUMENTOS_PATH:./storage/documentos}
+  seed:
+    admin:
+      ativo: ${SEED_ADMIN:true}
+      nome: ${SEED_ADMIN_NOME:Admin de desenvolvimento}
+      email: ${SEED_ADMIN_EMAIL:admin@planeta.dev}
+      senha: ${SEED_ADMIN_SENHA:admin123}
 
 server:
   port: 8080
