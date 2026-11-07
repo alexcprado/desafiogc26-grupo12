@@ -4,6 +4,7 @@ import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.exception.TokenSemIdentificacaoException;
 import br.com.planeta_atlantida.rbs.api.exception.UsuarioNaoAutenticadoException;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
+import br.com.planeta_atlantida.rbs.api.utils.Emails;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class BuscarUsuarioLogadoService {
             throw new TokenSemIdentificacaoException(Mensagens.TOKEN_SEM_IDENTIFICACAO);
         }
 
-        return usuarioRepository.findByEmail(subject)
+        return usuarioRepository.findByEmail(Emails.normalizar(subject))
                 .orElseThrow(() ->
                         new UsuarioNaoAutenticadoException(Mensagens.USUARIO_NAO_ENCONTRADO));
     }
