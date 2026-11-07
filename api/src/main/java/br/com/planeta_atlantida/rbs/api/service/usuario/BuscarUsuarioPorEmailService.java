@@ -2,6 +2,7 @@ package br.com.planeta_atlantida.rbs.api.service.usuario;
 
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
+import br.com.planeta_atlantida.rbs.api.utils.Emails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class BuscarUsuarioPorEmailService {
     private final UsuarioRepository usuarioRepository;
 
     public Optional<Usuario> buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+        return usuarioRepository.findByEmail(Emails.normalizar(email));
     }
 
 }

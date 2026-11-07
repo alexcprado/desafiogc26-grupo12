@@ -19,10 +19,22 @@ export function LoginForm() {
   async function aoSubmeter(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
     setErro(null);
+
+    // Lê direto do formulário: o autofill do navegador pode preencher o campo
+    // sem disparar o evento que atualiza o estado do React.
+    const dados = new FormData(evento.currentTarget);
+    const emailDigitado = String(dados.get("email") ?? "").trim().toLowerCase();
+    const senhaDigitada = String(dados.get("senha") ?? "");
+
+    if (!emailDigitado || !senhaDigitada) {
+      setErro("Informe e-mail e senha.");
+      return;
+    }
+
     setEnviando(true);
 
     try {
-      const usuario = await entrar(email.trim(), senha);
+      const usuario = await entrar(emailDigitado, senhaDigitada);
       navigate(usuario.tipo === "ADMIN" ? "/painel" : "/minha-marca", { replace: true });
     } catch (falha) {
       if (falha instanceof ApiError) {
@@ -69,8 +81,9 @@ export function LoginForm() {
         <Field label="E-mail" htmlFor="email">
           <Input
             id="email"
+            name="email"
             type="email"
-            autoComplete="email"
+            autoComplete="username"
             placeholder="voce@empresa.com.br"
             required
             value={email}
@@ -81,11 +94,11 @@ export function LoginForm() {
         <Field label="Senha" htmlFor="senha">
           <Input
             id="senha"
+            name="senha"
             type="password"
             autoComplete="current-password"
             placeholder="••••••••"
             required
-            minLength={6}
             value={senha}
             onChange={(evento) => setSenha(evento.target.value)}
           />

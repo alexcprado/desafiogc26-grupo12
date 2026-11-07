@@ -9,6 +9,7 @@ import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.enums.TipoUsuario;
 import br.com.planeta_atlantida.rbs.api.mapper.AdicionarUsuarioMapper;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
+import br.com.planeta_atlantida.rbs.api.utils.Emails;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinadorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,6 +54,7 @@ public class AdicionarUsuarioService {
 
     private AdicionarUsuarioResponse salvar(Usuario usuario) {
 
+        usuario.setEmail(Emails.normalizar(usuario.getEmail()));
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);

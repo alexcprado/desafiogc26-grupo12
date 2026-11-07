@@ -3,6 +3,7 @@ package br.com.planeta_atlantida.rbs.api.config;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.enums.TipoUsuario;
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
+import br.com.planeta_atlantida.rbs.api.utils.Emails;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,8 @@ public class DevDataSeeder implements ApplicationRunner {
         if (!ativo) {
             return;
         }
+
+        email = Emails.normalizar(email);
 
         if (usuarioRepository.findByEmail(email).isPresent()) {
             return;
