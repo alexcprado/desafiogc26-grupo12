@@ -326,6 +326,21 @@ O Vite sobe em `http://localhost:4200` e encaminha `/api` para a porta 8081. Par
 
 O endpoint de login é público. Nas demais rotas de negócio, envie o JWT retornado no cabeçalho HTTP `Authorization`, usando o esquema `Bearer`.
 
+### Acesso inicial em desenvolvimento
+
+O script de mock cria apenas o usuário do grupo, com um hash BCrypt cuja senha não está documentada — e não existe
+cadastro público nem recuperação de senha. Para um banco novo não ficar inacessível, a API cria uma conta ADMIN de
+desenvolvimento na primeira execução, se ela ainda não existir:
+
+```text
+e-mail: admin@planeta.dev
+senha:  admin123
+```
+
+As variáveis `SEED_ADMIN_EMAIL` e `SEED_ADMIN_SENHA` mudam essas credenciais, e `SEED_ADMIN=false` desliga a criação.
+Use apenas em desenvolvimento. Com essa conta é possível criar outras em `POST /usuarios/admins` ou pela tela
+**Equipe RBS** do front.
+
 Faça login enviando e-mail e senha:
 
 ```http
