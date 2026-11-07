@@ -311,7 +311,7 @@ Na pasta `api`:
 
 ### Front-end
 
-O front fica em `web/` e consome a API. Com a API rodando em `http://localhost:8081`:
+O front fica em `web/` e consome a API. Com a API rodando em `http://localhost:8080` (porta padrão do `application.yml`):
 
 ```bash
 cd web
@@ -319,8 +319,19 @@ npm install
 npm run dev
 ```
 
-O Vite sobe em `http://localhost:4200` e encaminha `/api` para a porta 8081. Para outra URL de API, crie
-`web/.env` com `VITE_API_URL=http://localhost:8080`. Detalhes de estrutura e decisões em `web/README.md`.
+O Vite sobe em `http://localhost:4200` e encaminha `/api` para `http://localhost:8080`. Se a API estiver em outra porta, aponte o proxy:
+
+```bash
+VITE_PROXY_TARGET=http://localhost:8081 npm run dev
+```
+
+`npm run preview` usa o mesmo proxy. Para servir o `dist` em um servidor sem proxy, gere o build com a URL completa da API:
+
+```bash
+VITE_API_URL=http://localhost:8080 npm run build
+```
+
+Detalhes de estrutura e decisões em `web/README.md`.
 
 ## Autenticação
 
