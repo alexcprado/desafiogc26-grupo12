@@ -3,6 +3,7 @@ package br.com.planeta_atlantida.rbs.api.controller;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioAdminRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarUsuarioPatrocinadorRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AdicionarUsuarioResponse;
+import br.com.planeta_atlantida.rbs.api.doc.UsuarioControllerDoc;
 import br.com.planeta_atlantida.rbs.api.service.usuario.AdicionarUsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerDoc {
 
     private final AdicionarUsuarioService adicionarUsuarioService;
 

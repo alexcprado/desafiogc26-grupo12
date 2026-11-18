@@ -58,6 +58,12 @@ public class SecurityConfig {
                         .hasRole(ROLE)
                         .requestMatchers("/auditorias/**")
                         .hasRole(ROLE)
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .anyRequest().authenticated()

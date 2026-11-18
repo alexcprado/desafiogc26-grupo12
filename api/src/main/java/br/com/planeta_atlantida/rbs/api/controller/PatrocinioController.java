@@ -3,6 +3,7 @@ package br.com.planeta_atlantida.rbs.api.controller;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarCortesiaRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.AdicionarPesquisaAtivacaoRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.*;
+import br.com.planeta_atlantida.rbs.api.doc.PatrocinioControllerDoc;
 import br.com.planeta_atlantida.rbs.api.service.cortesia.AdicionarCortesiaService;
 import br.com.planeta_atlantida.rbs.api.service.cortesia.ListarCortesiasService;
 import br.com.planeta_atlantida.rbs.api.service.cortesia.RemoverCortesiaService;
@@ -29,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/patrocinios")
 @RequiredArgsConstructor
-public class PatrocinioController {
+public class PatrocinioController implements PatrocinioControllerDoc {
 
     private final AdicionarPesquisaAtivacaoService adicionarPesquisaAtivacaoService;
     private final ListarPesquisasAtivacaoService listarPesquisasAtivacaoService;

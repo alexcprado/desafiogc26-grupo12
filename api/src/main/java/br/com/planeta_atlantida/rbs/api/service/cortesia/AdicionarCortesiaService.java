@@ -7,7 +7,6 @@ import br.com.planeta_atlantida.rbs.api.domain.Patrocinio;
 import br.com.planeta_atlantida.rbs.api.enums.AcaoAuditoria;
 import br.com.planeta_atlantida.rbs.api.enums.EntidadeAuditoria;
 import br.com.planeta_atlantida.rbs.api.mapper.AdicionarCortesiaMapper;
-import br.com.planeta_atlantida.rbs.api.mapper.AdicionarPatrocinadorMapper;
 import br.com.planeta_atlantida.rbs.api.repository.CortesiaRepository;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.RegistrarAuditoriaService;
 import br.com.planeta_atlantida.rbs.api.validator.CortesiaValidator;
