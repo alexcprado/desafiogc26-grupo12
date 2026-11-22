@@ -2,12 +2,14 @@ package br.com.planeta_atlantida.rbs.api.controller;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.BaixarDocumentoResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.EnviarDocumentoResponse;
+import br.com.planeta_atlantida.rbs.api.doc.DocumentoControllerDoc;
 import br.com.planeta_atlantida.rbs.api.enums.CategoriaDocumento;
 import br.com.planeta_atlantida.rbs.api.service.documento.BaixarDocumentoService;
 import br.com.planeta_atlantida.rbs.api.service.documento.EnviarDocumentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,11 +18,12 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @RequestMapping("/patrocinios")
 @RequiredArgsConstructor
-public class DocumentoController {
+public class DocumentoController implements DocumentoControllerDoc {
 
     private final EnviarDocumentoService enviarDocumentoService;
     private final BaixarDocumentoService baixarDocumentoService;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @PostMapping(path = "/{idPatrocinio}/documentos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EnviarDocumentoResponse> enviar(
                 @PathVariable Long idPatrocinio,
@@ -31,6 +34,7 @@ public class DocumentoController {
                 .body(enviarDocumentoService.enviar(idPatrocinio, arquivo, categoria));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @GetMapping("/{idPatrocinio}/documentos/{idDocumento}/download")
     public ResponseEntity<Resource> baixar(
             @PathVariable("idPatrocinio") Long idpatrocinio,

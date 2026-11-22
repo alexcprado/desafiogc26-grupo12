@@ -12,6 +12,7 @@ import br.com.planeta_atlantida.rbs.api.validator.DocumentoValidator;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class BaixarDocumentoService {
     private final DocumentoValidator documentoValidator;
     private final PatrocinioValidator patrocinioValidator;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @Transactional
     public BaixarDocumentoResponse baixar(Long idDocumento) {
 

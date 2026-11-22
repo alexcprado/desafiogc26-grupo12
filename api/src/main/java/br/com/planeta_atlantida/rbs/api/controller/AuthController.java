@@ -3,6 +3,7 @@ package br.com.planeta_atlantida.rbs.api.controller;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.request.LoginRequest;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.LoginResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.UsuarioLogadoResponse;
+import br.com.planeta_atlantida.rbs.api.doc.AuthControllerDoc;
 import br.com.planeta_atlantida.rbs.api.domain.Usuario;
 import br.com.planeta_atlantida.rbs.api.exception.BadCredentialsException;
 import br.com.planeta_atlantida.rbs.api.mapper.UsuarioLogadoMapper;
@@ -13,6 +14,7 @@ import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -30,7 +32,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
 
     private final BuscarUsuarioPorEmailService buscarUsuarioPorEmailService;
     private final BuscarUsuarioLogadoService buscarUsuarioLogadoService;
@@ -73,6 +75,7 @@ public class AuthController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @GetMapping("/me")
     public ResponseEntity<UsuarioLogadoResponse> me() {
         return ResponseEntity.ok(UsuarioLogadoMapper.toResponse(buscarUsuarioLogadoService.buscar()));

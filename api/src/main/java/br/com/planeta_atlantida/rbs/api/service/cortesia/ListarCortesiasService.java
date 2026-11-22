@@ -7,7 +7,9 @@ import br.com.planeta_atlantida.rbs.api.mapper.ListarCortesiaMapper;
 import br.com.planeta_atlantida.rbs.api.repository.CortesiaRepository;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinioValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ public class ListarCortesiasService {
     private final CortesiaRepository cortesiaRepository;
     private final PatrocinioValidator patrocinioValidator;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
+    @Transactional(readOnly = true)
     public List<ListarCortesiasResponse> listar(Long idPatrocinio) {
 
         Patrocinio patrocinio = patrocinioValidator.validarPatrocinioExiste(idPatrocinio);

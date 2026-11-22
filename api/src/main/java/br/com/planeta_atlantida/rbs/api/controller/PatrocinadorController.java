@@ -7,6 +7,7 @@ import br.com.planeta_atlantida.rbs.api.controller.dtos.response.AlterarPatrocin
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.DesativarPatrocinadorResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.ListarPatrocinadoresResponse;
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.PatrocinadorResponse;
+import br.com.planeta_atlantida.rbs.api.doc.PatrocinadorControllerDoc;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.AdicionarPatrocinadorService;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.AlterarPatrocinadorService;
 import br.com.planeta_atlantida.rbs.api.service.patrocinador.BuscarPatrocinadorPorIdService;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/patrocinadores")
 @RequiredArgsConstructor
-public class PatrocinadorController {
+public class PatrocinadorController implements PatrocinadorControllerDoc {
 
     private final ListarPatrocinadoresService listarPatrocinadoresService;
     private final BuscarPatrocinadorPorIdService buscarPatrocinadorPorIdService;
@@ -50,6 +51,7 @@ public class PatrocinadorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(adicionarPatrocinadorService.adicionar(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<AlterarPatrocinadorResponse> alterar(
             @PathVariable Long id,
@@ -57,6 +59,7 @@ public class PatrocinadorController {
         return ResponseEntity.status(HttpStatus.OK).body(alterarPatrocinadorService.alterar(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DesativarPatrocinadorResponse> desativar(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(desativarPatrocinadorService.desativar(id));

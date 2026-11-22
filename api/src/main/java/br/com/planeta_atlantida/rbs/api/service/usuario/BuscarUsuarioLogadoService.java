@@ -6,6 +6,7 @@ import br.com.planeta_atlantida.rbs.api.exception.UsuarioNaoAutenticadoException
 import br.com.planeta_atlantida.rbs.api.repository.UsuarioRepository;
 import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -17,6 +18,7 @@ public class BuscarUsuarioLogadoService {
 
     private final UsuarioRepository usuarioRepository;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     public Usuario buscar() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

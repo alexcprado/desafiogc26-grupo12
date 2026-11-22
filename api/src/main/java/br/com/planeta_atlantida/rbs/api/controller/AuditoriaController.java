@@ -1,6 +1,7 @@
 package br.com.planeta_atlantida.rbs.api.controller;
 
 import br.com.planeta_atlantida.rbs.api.controller.dtos.response.ListarAuditoriaResponse;
+import br.com.planeta_atlantida.rbs.api.doc.AuditoriaControllerDoc;
 import br.com.planeta_atlantida.rbs.api.service.auditoria.ListarAuditoriasService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auditorias")
 @RequiredArgsConstructor
-public class AuditoriaController {
+public class AuditoriaController implements AuditoriaControllerDoc {
 
     private final ListarAuditoriasService listarAuditoriasService;
 

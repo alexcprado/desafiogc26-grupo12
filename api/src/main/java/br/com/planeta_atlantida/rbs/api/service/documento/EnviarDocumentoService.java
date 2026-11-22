@@ -14,6 +14,7 @@ import br.com.planeta_atlantida.rbs.api.utils.Mensagens;
 import br.com.planeta_atlantida.rbs.api.validator.DocumentoValidator;
 import br.com.planeta_atlantida.rbs.api.validator.PatrocinioValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,7 @@ public class EnviarDocumentoService {
     private final PatrocinioValidator patrocinioValidator;
     private final DocumentoValidator documentoValidator;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @Transactional
     public EnviarDocumentoResponse enviar(Long idPatrocinio, MultipartFile arquivo, CategoriaDocumento categoria) {
 

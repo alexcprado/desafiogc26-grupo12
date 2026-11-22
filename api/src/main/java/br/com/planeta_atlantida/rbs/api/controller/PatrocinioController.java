@@ -57,6 +57,7 @@ public class PatrocinioController implements PatrocinioControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(listarMeusPatrociniosService.listar());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @GetMapping("/{id}/detalhes")
     public ResponseEntity<DetalhesPatrocinioResponse> buscarDetalhes(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(buscarDetalhesPatrocinioService.buscar(id));
@@ -74,6 +75,7 @@ public class PatrocinioController implements PatrocinioControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(buscarPesquisaAtivacaoService.buscar(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @PostMapping("/{id}/pesquisa-ativacao")
     public ResponseEntity<AdicionarPesquisaAtivacaoResponse> adicionar(
             @PathVariable Long id,
@@ -81,6 +83,7 @@ public class PatrocinioController implements PatrocinioControllerDoc {
         return ResponseEntity.status(HttpStatus.CREATED).body(adicionarPesquisaAtivacaoService.adicionar(id, request));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @GetMapping("/{id}/cortesias")
     public ResponseEntity<List<ListarCortesiasResponse>> listar(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(listarCortesiasService.listar(id));
@@ -102,6 +105,7 @@ public class PatrocinioController implements PatrocinioControllerDoc {
         return ResponseEntity.status(HttpStatus.OK).body(removerCortesiaService.remover(id, idCortesia));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATROCINADOR')")
     @GetMapping(path = "/{id}/relatorio", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> gerar(@PathVariable Long id) throws IOException {
         return ResponseEntity.status(HttpStatus.OK).body(gerarRelatorioService.gerar(id));

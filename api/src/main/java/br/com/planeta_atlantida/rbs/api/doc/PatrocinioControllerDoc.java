@@ -54,12 +54,7 @@ public interface PatrocinioControllerDoc {
                     @ApiResponse(
                             responseCode = "400",
                             description = "Parâmetros de requisição inválidos",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(
-                                            implementation = ErrorResponse.class
-                                    )
-                            )
+                            content = @Content
                     )
             }
     )
@@ -178,7 +173,7 @@ public interface PatrocinioControllerDoc {
     @Operation(
             summary = "Buscar pesquisa de ativação",
             description = """
-                    Retorn a pesquisa de ativação vinculada ao
+                    Retorna a pesquisa de ativação vinculada ao
                     patrocínio informado.
                     
                     **Permissões necessárias:**
@@ -204,9 +199,7 @@ public interface PatrocinioControllerDoc {
                     @ApiResponse(
                             responseCode = "404",
                             description = "Patrocínio ou pesquisa de ativação não encontrada",
-                            content = @Content(
-                                    schema = @Schema(implementation = ErrorResponse.class)
-                            )
+                            content = @Content
                     )
             }
     )
@@ -219,6 +212,49 @@ public interface PatrocinioControllerDoc {
             Long id
     );
 
+    @SecurityRequirement(name = "BearerAuth")
+    @Operation(
+            summary = "Cadastrar pesquisa de ativação",
+            description = """
+                    Cadastra uma nova pesquisa de ativação vinculada
+                    ao patrocínio informado.
+                    
+                    A pesquisa é composta por três perguntas que serão
+                    utilizadas para avaliar a ativação do patrocinador
+                    durante o evento.
+                    
+                    **Permissões necessárias:**
+                    
+                    - **ADMIN**
+                    - **PATROCINADOR**
+                    """,
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Pesquisa de ativação cadastrada com sucesso"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Dados da requisição inválidos",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Token de autenticação ausente ou inválido",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Usuário não possui permissão para cadastrar a pesquisa",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Patrocínio não encontrado",
+                            content = @Content
+                    )
+            }
+    )
     ResponseEntity<AdicionarPesquisaAtivacaoResponse> adicionar(
 
             @Parameter(
@@ -285,9 +321,7 @@ public interface PatrocinioControllerDoc {
                     @ApiResponse(
                             responseCode = "404",
                             description = "Patrocínio não encontrado",
-                            content = @Content(
-                                    schema = @Schema(implementation = ErrorResponse.class)
-                            )
+                            content = @Content
                     )
             }
     )
